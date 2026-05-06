@@ -1,11 +1,11 @@
 package banco;
 
 public class ContaCorrente extends Conta{
-    private double chequeEspecial;
+    private  ContaPoupanca protecaoContaPoupanca;
 
-    ContaCorrente(double saldoInicial, double chequeEspecial){
+    ContaCorrente(double saldoInicial, ContaPoupanca contaPoupanca){
         super(saldoInicial);
-        this.chequeEspecial = chequeEspecial;
+        this.protecaoContaPoupanca = contaPoupanca;
     }
 
     ContaCorrente(double saldoInicial){
@@ -14,11 +14,33 @@ public class ContaCorrente extends Conta{
 
     @Override
     public boolean sacar(double amount) {
-        if((this.saldo + this.chequeEspecial) >= amount){
-            this.saldo -= amount;
+        if(saldo >= amount){
+            saldo -= amount;
+
             return true;
+        } else if (protecaoContaPoupanca != null) {
+            double diferenca = amount - saldo;
+
+            if(protecaoContaPoupanca.saldo >= diferenca){
+                saldo = 0;
+                protecaoContaPoupanca.saldo -= diferenca;
+
+                return true;
+            } else {
+
+                return false;
+            }
         } else{
+
             return false;
         }
+    }
+
+    public ContaPoupanca getContaPoupanca(){
+        return this.protecaoContaPoupanca;
+    }
+
+    public void setContaPoupanca(ContaPoupanca contaPoupanca){
+        this.protecaoContaPoupanca = contaPoupanca;
     }
 }
