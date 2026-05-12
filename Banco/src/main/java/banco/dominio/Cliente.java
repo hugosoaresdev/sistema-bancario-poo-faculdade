@@ -1,6 +1,4 @@
-package banco;
-
-import java.util.ArrayList;
+package banco.dominio;
 
 public class Cliente {
     private String nome;
